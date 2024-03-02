@@ -1,0 +1,31 @@
+{% extends '/base.html.twig' %}
+
+{% block title %}Liste des prestations{% endblock %}
+
+{% block body %}
+<h1>Liste des prestations</h1>
+<table class="mt-5 table">
+    <thead>
+        <tr>
+            <th>Date de la demande</th>
+            <th>Nom</th>
+            <th>Rémunération</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Les lignes de la table iront ici -->
+        {% for prestation in prestations %}
+            <tr>
+                <td>{{ prestation.dateCreation|date('Y-m-d') }}</td>
+                <td>{{ prestation.nom }}</td>
+                <td>{{ prestation.remuneration }}</td>
+          <td>
+            <a href="{{ path('app_modifier',  {'id' : prestation.id}) }}" class="btn btn-sm btn-primary">Modifier</a>
+            <a href="{{ path('app_supprimer',  {'id' : prestation.id}) }}" onClick="return confirm('Êtes vous sûr-e ?')" class="btn btn-sm btn-danger">Supprimer</a>
+          </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

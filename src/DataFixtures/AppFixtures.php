@@ -21,6 +21,37 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $faker = Faker\Factory::create();
+        $users = [];
+        for ($i = 0; $i < 1; $i++) {
+            $user = new User();
+            $user->setEmail("user@gmail.com");
+            $user->setNom($faker->name());
+            $user->setPrenom($faker->firstName());
+            $user->setPassword($this->userPasswordHasher->hashPassword($user, "123"));
+            $user->setDateInscription($faker->dateTime());
+            $user->setRoles(["ROLE_USER"]);
+            $users[] = $user;
+            $manager->persist($user);
+
+            $user = new User();
+            $user->setEmail("usertest@gmail.com");
+            $user->setNom($faker->name());
+            $user->setPrenom($faker->firstName());
+            $user->setPassword($this->userPasswordHasher->hashPassword($user, "123"));
+            $user->setDateInscription($faker->dateTime());
+            $user->setRoles(["ROLE_USER"]);
+            $users[] = $user;
+            $manager->persist($user);
+
+            $user = new User();
+            $user->setEmail("admin@gmail.com");
+            $user->setNom($faker->name);
+            $user->setPrenom($faker->firstname);
+            $user->setPassword($this->userPasswordHasher->hashPassword($user, "admin"));
+            $user->setDateInscription($faker->dateTime());
+            $user->setRoles(["ROLE_ADMIN"]);
+            $manager->persist($user);
+        }
 
         for ($i = 0; $i < 10; $i++) {
             $prestation = new Prestation;
@@ -30,17 +61,10 @@ class AppFixtures extends Fixture
             $prestation->setRemuneration($faker->buildingNumber());
             $prestation->setDateCreation($faker->dateTime());
             $prestation->setNumeroTelephone($faker->phoneNumber());
+            $prestation->setUser($users[mt_rand(0, count($users)-1)]);
             $manager->persist($prestation);
         }
-
-        $user = new User();
-        $user->setEmail("user@gmail.com");
-        $user->setNom($faker->name());
-        $user->setPrenom($faker->firstName());
-        $user->setPassword($this->userPasswordHasher->hashPassword($user, "123"));
-        $user->setDateInscription($faker->dateTime());
-        $user->setRoles(["ROLE_USER"]);
-        $manager->persist($user);
+    
 
         $manager->flush();
     }

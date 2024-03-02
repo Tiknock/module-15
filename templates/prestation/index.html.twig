@@ -1,38 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Locky{% endblock %}
-
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Les dernières demandes de prestation</h1>
-
-    <table class="table table-striped table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>Date de la demande</th>
-                <th>Nom</th>
-                <th>Extrait</th>
-                <th>Rémunération</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Les lignes de la table iront ici -->
-            {% for prestation in prestations %}
-                <tr>
-                    <td>{{ prestation.dateCreation|date('Y-m-d') }}</td>
-                    <td>{{ prestation.nom }}</td>
-                    <td>{{ prestation.extrait }}</td>
-                    <td>{{ prestation.remuneration }}</td>
-                    <td><a href="{{ path('prestation_individuelle', {'id': prestation.id}) }}" class="btn btn-primary">Voir</a></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="container">
+    <div class="row">
+        <div class="col-md-10">
+            <!-- Contenu principal -->
+            <div class="example-wrapper">
+                <h1>Les dernières demandes de prestation</h1>
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Date de la demande</th>
+                            <th>Propriétaire</th>
+                            <th>Nom</th>
+                            <th>Extrait</th>
+                            <th>Rémunération</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prestation in prestations %}
+                            <tr>
+                                <td>{{ prestation.dateCreation|date('Y-m-d') }}</td>
+                                <td>{{ prestation.user.nom }}</td>
+                                <td>{{ prestation.nom }}</td>
+                                <td>{{ prestation.extrait }}</td>
+                                <td>{{ prestation.remuneration }}</td>
+                                <td><a href="{{ path('prestation_individuelle', {'id': prestation.id}) }}" class="btn btn-primary">Voir</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <!-- Barre latérale -->
+            <div class="sidebar">
+                <h2>Dernier utilisateur inscrit</h2>
+                {% if lastUser is defined %}
+                    <p>{{ lastUser.nom }}</p>
+                    <!-- Affichez d'autres informations sur l'utilisateur si nécessaire -->
+                {% else %}
+                    <p>Aucun utilisateur inscrit pour le moment</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

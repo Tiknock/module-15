@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Admin - {% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('admin') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('admin') }}
+{% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+    </head>
+    <body>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-2 sidebar">
+            <a class="sidebar__link" href="{{path('app_admin')}}">
+              <div class="sidebar__link__onglet">
+                Dashboard
+              </div>
+            </a>
+            <a class="sidebar__link" href="{{path('app_admin_utilisateurs')}}">
+              <div class="sidebar__link__onglet">
+                Liste des utilisateurs
+              </div>
+            </a>
+          </div>
+
+          <div class="col">
+
+            {% for label, messages in app.flashes %}
+              {% for message in messages %}
+                  <div class="alert alert-{{ label }}">
+                      {{ message }}
+                  </div>
+              {% endfor %}
+            {% endfor %}
+            <div class="container mt-5">
+              {% block body%}{% endblock %}
+            </div>
+
+          </div>
+        </div>
+      </div>  
+    </body>
+</html>

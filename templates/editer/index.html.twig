@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajout de prestation{% endblock %}
+{% block title %}{{ (app.request.get('_route') == 'app_ajout' ? 'Ajouter' : 'Modifier') }} une prestation{% endblock %}
 
 {% block body %}
     
-    <h1>Ajouter une prestation</h1>
+    <h1>{{ (app.request.get('_route') == 'app_ajout' ? 'Ajouter' : 'Modifier') }} une prestation</h1>
     <div class="container w-25 m-auto">
         {{ form_start(form) }}
             {{ form_row(form.nom) }}
@@ -12,7 +12,7 @@
             {{ form_row(form.description) }}
             {{ form_row(form.remuneration) }}
             {{ form_row(form.numeroTelephone) }}
-            <button class="btn btn-primary"  type="submit">Ajouter</button>
+            <button class="btn btn-primary"  type="submit">{{ (app.request.get('_route') == 'app_ajout' ? 'Ajouter' : 'Modifier') }} une prestation</button>
         {{ form_end(form) }}
     </div>
 {% endblock %}

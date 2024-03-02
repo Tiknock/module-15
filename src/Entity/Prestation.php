@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\PrestationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PrestationRepository::class)]
 class Prestation
@@ -24,13 +25,22 @@ class Prestation
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $remuneration = null;
+    #[Assert\Range(
+        min: 5,
+        max: 500,
+        notInRangeMessage: 'La prestation doit être comprise entre {{ min }} € et {{ max }} €',
+    )]
+    private ?float $remuneration = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateCreation = null;
 
     #[ORM\Column(length: 10)]
     private ?string $numeroTelephone = null;
+
+    #[ORM\ManyToOne(inversedBy: 'prestations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -105,6 +115,18 @@ class Prestation
     public function setNumeroTelephone(string $numeroTelephone): static
     {
         $this->numeroTelephone = $numeroTelephone;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
